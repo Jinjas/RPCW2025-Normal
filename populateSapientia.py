@@ -7,6 +7,7 @@ g.parse("sapientia_base.ttl")
 n = Namespace("http://rpcw/ontologies/2025/sapientia_base/")
 
 
+#migração dos conceitos
 with open("conceitos.json", "r",encoding="utf-8") as f:
     data = json.load(f)
 
@@ -62,7 +63,7 @@ for conceito in data["conceitos"]:
             aplicacoesList.append(aplicacao)
         g.add((conceitoURI,n.temAplicaçãoEm,aplicacaoURI))
 
-
+#migração das disciplinas
 with open("disciplinas.json", "r",encoding="utf-8") as f:
     data = json.load(f)
 
@@ -101,7 +102,7 @@ for disciplina in data["disciplinas"]:
             conceitosList.append(con)
         g.add((conURI,n.éEstudadoEm,disciplinaURI))
 
-    
+#migração dos mestres
 with open("mestres.json", "r",encoding="utf-8") as f:
     data = json.load(f)
 
@@ -137,7 +138,7 @@ for mestre in data["mestres"]:
             disciplinasList.append(dis)
         g.add((mestreURI,n.ensina,disURI))
     
-
+#migração das obras
 with open("obras.json", "r",encoding="utf-8") as f:
     data = json.load(f)
 
@@ -172,6 +173,8 @@ for obra in data["obras"]:
             conceitosList.append(con)
         g.add((obraURI,n.explica,conURI))
 
+
+#migração dos aprendizes
 with open("pg56006.json", "r",encoding="utf-8") as f:
     data = json.load(f)
 
