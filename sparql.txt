@@ -105,10 +105,10 @@ PREFIX : <http://rpcw/ontologies/2025/sapientia_base/>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 
 SELECT ?disciplinaNome (COUNT(?aprendiz) AS ?numAlunos) WHERE {
-  ?disciplina rdf:type :Disciplina ;
+  ?disciplina a :Disciplina ;
               :nome ?disciplinaNome .
 
-  ?aprendiz rdf:type :Aprendiz ;
+  ?aprendiz a :Aprendiz ;
             :aprende ?disciplina .
 }
 GROUP BY ?disciplinaNome
@@ -120,10 +120,10 @@ PREFIX : <http://rpcw/ontologies/2025/sapientia_base/>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 
 SELECT ?periodoNome (COUNT(?conceito) AS ?numConceitos) WHERE {
-  ?conceito rdf:type :Conceito ;
+  ?conceito a :Conceito ;
             :surgeEm ?periodo .
 
-  ?periodo rdf:type :PeriodoHistorico ;
+  ?periodo a :PeriodoHistorico ;
            :periodo ?periodoNome .
 }
 GROUP BY ?periodoNome
@@ -136,11 +136,11 @@ PREFIX : <http://rpcw/ontologies/2025/sapientia_base/>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 
 SELECT ?conceitoNome (GROUP_CONCAT(?tituloObra; separator=", ") AS ?obras) WHERE {
-  ?obra rdf:type :Obra ;
+  ?obra a :Obra ;
         :explica ?conceito ;
         :titulo ?tituloObra .
   
-  ?conceito rdf:type :Conceito ;
+  ?conceito a :Conceito ;
             :nome ?conceitoNome .
 }
 GROUP BY ?conceitoNome
@@ -153,11 +153,11 @@ PREFIX : <http://rpcw/ontologies/2025/sapientia_base/>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 
 SELECT ?disciplinaNome (GROUP_CONCAT(?aprendizNome; separator=", ") AS ?aprendizes) WHERE {
-  ?aprendiz rdf:type :Aprendiz ;
+  ?aprendiz a :Aprendiz ;
             :nome ?aprendizNome ;
             :aprende ?disciplina .
   
-  ?disciplina rdf:type :Disciplina ;
+  ?disciplina a :Disciplina ;
               :nome ?disciplinaNome .
 }
 GROUP BY ?disciplinaNome
@@ -169,7 +169,7 @@ PREFIX : <http://rpcw/ontologies/2025/sapientia_base/>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 
 SELECT (STR(?escalão) AS ?EscalãoEtário) (COUNT(?aprendiz) AS ?NumeroAprendizes) WHERE {
-  ?aprendiz rdf:type :Aprendiz ;
+  ?aprendiz a :Aprendiz ;
             :idade ?idade .
   
   BIND (
@@ -208,10 +208,10 @@ INSERT {
   ?aprendiz :estudaCom ?mestre .
 }
 WHERE {
-  ?aprendiz rdf:type :Aprendiz ;
+  ?aprendiz a :Aprendiz ;
             :aprende ?disciplina .
   
-  ?mestre rdf:type :Mestre ;
+  ?mestre a :Mestre ;
           :ensina ?disciplina .
 }
 
@@ -238,9 +238,9 @@ INSERT {
   ?disciplina :dáBasesPara ?aplicacao .
 }
 WHERE {
-  ?disciplina rdf:type :Disciplina .
+  ?disciplina a :Disciplina .
   
-  ?conceito rdf:type :Conceito ;
+  ?conceito a :Conceito ;
             :éEstudadoEm ?disciplina ;
             :temAplicaçãoEm ?aplicacao .
 }
