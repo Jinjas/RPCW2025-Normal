@@ -1,0 +1,246 @@
+12)
+
+PREFIX : <http://rpcw/ontologies/2025/sapientia_base/>
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT DISTINCT ?conceitoNome WHERE {
+  ?mestre a :Mestre ;
+          :nome "Aristóteles" ;
+          :ensina ?disciplina .
+
+  ?conceito a :Conceito ;
+            :éEstudadoEm ?disciplina ;
+            :nome ?conceitoNome .
+}
+
+13)
+
+PREFIX : <http://rpcw/ontologies/2025/sapientia_base/>
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT DISTINCT ?obraTitulo WHERE {
+  ?conceito a :Conceito ;
+            :nome "Relatividade" .
+
+  ?obra a :Obra ;
+        :explica ?conceito ;
+        :titulo ?obraTitulo .
+}
+
+14)
+
+PREFIX : <http://rpcw/ontologies/2025/sapientia_base/>
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT DISTINCT ?disciplinaNome WHERE {
+  ?tc a :TipoDeConhecimento ;
+            :nome "Ciências Sociais" .
+
+  ?disciplina :pertenceA ?tc .
+  ?disciplina :nome ?disciplinaNome .
+}
+
+15)
+
+PREFIX : <http://rpcw/ontologies/2025/sapientia_base/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT DISTINCT ?aplicacaoNome WHERE {
+  ?conceito a :Conceito ;
+            :nome "Lógica Formal" ;
+            :temAplicaçãoEm ?aplicacao .
+
+  ?aplicacao :nome ?aplicacaoNome .
+}
+
+16)
+
+PREFIX : <http://rpcw/ontologies/2025/sapientia_base/>
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT DISTINCT ?disciplinaNome WHERE {
+  ?tc a :TipoDeConhecimento ;
+            :nome "Ciências Exatas" .
+
+  ?disciplina :pertenceA ?tc .
+  ?disciplina :nome ?disciplinaNome .
+}
+
+
+17)
+
+PREFIX : <http://rpcw/ontologies/2025/sapientia_base/>
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT DISTINCT ?mestreNome WHERE {
+  ?mestre a :Mestre ;
+          :nome ?mestreNome ;
+          :surgeEm /:periodo "Século XIX" .
+}
+
+
+18)
+
+PREFIX : <http://rpcw/ontologies/2025/sapientia_base/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT DISTINCT ?disciplina ?aprendizNome WHERE {
+  ?disciplina a :Disciplina ;
+              :nome "Programação" .
+
+  ?aprendiz a :Aprendiz ;
+            :nome ?aprendizNome ;
+            :aprende ?disciplina .
+}
+
+
+19)
+
+PREFIX : <http://rpcw/ontologies/2025/sapientia_base/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT ?disciplinaNome (COUNT(?aprendiz) AS ?numAlunos) WHERE {
+  ?disciplina rdf:type :Disciplina ;
+              :nome ?disciplinaNome .
+
+  ?aprendiz rdf:type :Aprendiz ;
+            :aprende ?disciplina .
+}
+GROUP BY ?disciplinaNome
+ORDER BY DESC(?numAlunos)
+
+20)
+
+PREFIX : <http://rpcw/ontologies/2025/sapientia_base/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT ?periodoNome (COUNT(?conceito) AS ?numConceitos) WHERE {
+  ?conceito rdf:type :Conceito ;
+            :surgeEm ?periodo .
+
+  ?periodo rdf:type :PeriodoHistorico ;
+           :periodo ?periodoNome .
+}
+GROUP BY ?periodoNome
+ORDER BY DESC(?numConceitos)
+
+
+21)
+
+PREFIX : <http://rpcw/ontologies/2025/sapientia_base/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT ?conceitoNome (GROUP_CONCAT(?tituloObra; separator=", ") AS ?obras) WHERE {
+  ?obra rdf:type :Obra ;
+        :explica ?conceito ;
+        :titulo ?tituloObra .
+  
+  ?conceito rdf:type :Conceito ;
+            :nome ?conceitoNome .
+}
+GROUP BY ?conceitoNome
+ORDER BY ?conceitoNome
+
+
+22)
+
+PREFIX : <http://rpcw/ontologies/2025/sapientia_base/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT ?disciplinaNome (GROUP_CONCAT(?aprendizNome; separator=", ") AS ?aprendizes) WHERE {
+  ?aprendiz rdf:type :Aprendiz ;
+            :nome ?aprendizNome ;
+            :aprende ?disciplina .
+  
+  ?disciplina rdf:type :Disciplina ;
+              :nome ?disciplinaNome .
+}
+GROUP BY ?disciplinaNome
+ORDER BY ?disciplinaNome
+
+23)
+
+PREFIX : <http://rpcw/ontologies/2025/sapientia_base/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT (STR(?escalão) AS ?EscalãoEtário) (COUNT(?aprendiz) AS ?NumeroAprendizes) WHERE {
+  ?aprendiz rdf:type :Aprendiz ;
+            :idade ?idade .
+  
+  BIND (
+    IF(?idade >= 17 && ?idade <= 34, "[17, 34]",
+    IF(?idade >= 35 && ?idade <= 44, "[35, 44]",
+    IF(?idade >= 45 && ?idade <= 54, "[45, 54]",
+    IF(?idade >= 55 && ?idade <= 64, "[55, 64]",
+    IF(?idade >= 65 && ?idade <= 74, "[65, 74]",
+    IF(?idade >= 75 && ?idade <= 100, "[75, 100]",
+    "Fora de intervalo"
+                            )))))) AS ?escalão )
+}
+GROUP BY ?escalão
+ORDER BY ?escalão
+
+
+24)
+
+PREFIX : <http://rpcw/ontologies/2025/sapientia_base/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+INSERT DATA {
+  :estudaCom a owl:ObjectProperty ;
+             rdfs:domain :Aprendiz ;
+             rdfs:range :Mestre ;
+             rdfs:label "estudaCom" .
+}
+
+25)
+
+PREFIX : <http://rpcw/ontologies/2025/sapientia_base/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+INSERT {
+  ?aprendiz :estudaCom ?mestre .
+}
+WHERE {
+  ?aprendiz rdf:type :Aprendiz ;
+            :aprende ?disciplina .
+  
+  ?mestre rdf:type :Mestre ;
+          :ensina ?disciplina .
+}
+
+26)
+
+PREFIX : <http://rpcw/ontologies/2025/sapientia_base/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+INSERT DATA {
+  :dáBasesPara a owl:ObjectProperty ;
+               rdfs:domain :Disciplina ;
+               rdfs:range :Aplicacao ;
+               rdfs:label "dáBasesPara" .
+}
+
+
+27)
+
+PREFIX : <http://rpcw/ontologies/2025/sapientia_base/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+INSERT {
+  ?disciplina :dáBasesPara ?aplicacao .
+}
+WHERE {
+  ?disciplina rdf:type :Disciplina .
+  
+  ?conceito rdf:type :Conceito ;
+            :éEstudadoEm ?disciplina ;
+            :temAplicaçãoEm ?aplicacao .
+}
