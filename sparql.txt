@@ -90,7 +90,7 @@ PREFIX : <http://rpcw/ontologies/2025/sapientia_base/>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 
 SELECT DISTINCT ?disciplina ?aprendizNome WHERE {
-  ?disciplina a :Disciplina ;
+  ?conceito :éEstudadoEm ?disciplina ;
               :nome "Programação" .
 
   ?aprendiz a :Aprendiz ;

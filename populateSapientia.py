@@ -27,7 +27,7 @@ for conceito in data["conceitos"]:
     periodoHist = conceito["períodoHistórico"] #str
     conceitosRel = conceito["conceitosRelacionados"] #list
 
-    conceitoURI = URIRef(f"{n}{nome.replace(' ', '_')}")
+    conceitoURI = URIRef(f"{n}{nome.replace(' ', '_')}_C")
 
     if nome not in conceitosList:
         g.add((conceitoURI, RDF.type, OWL.NamedIndividual))
@@ -35,7 +35,7 @@ for conceito in data["conceitos"]:
         g.add((conceitoURI, n.nome, Literal(nome)))
         conceitosList.append(nome)
 
-    periodoURI = URIRef(f"{n}{periodoHist.replace(' ', '_')}")
+    periodoURI = URIRef(f"{n}{periodoHist.replace(' ', '_')}_P")
     if periodoHist not in periodoHistList:
         g.add((periodoURI, RDF.type, OWL.NamedIndividual))
         g.add((periodoURI, RDF.type, n.PeriodoHistorico))
@@ -46,7 +46,7 @@ for conceito in data["conceitos"]:
     g.add((conceitoURI,n.surgeEm,periodoURI))
     
     for conceitoRel in conceitosRel:
-        conceitoRelURI = URIRef(f"{n}{conceitoRel.replace(' ', '_')}")
+        conceitoRelURI = URIRef(f"{n}{conceitoRel.replace(' ', '_')}_C")
         if conceitoRel not in conceitosList:
             g.add((conceitoRelURI, RDF.type, OWL.NamedIndividual))
             g.add((conceitoRelURI, RDF.type, n.Conceito))
@@ -55,7 +55,7 @@ for conceito in data["conceitos"]:
         g.add((conceitoURI,n.estáRelacionadoCom,conceitoRelURI))
     
     for aplicacao in aplicacoes:
-        aplicacaoURI = URIRef(f"{n}{aplicacao.replace(' ', '_')}")
+        aplicacaoURI = URIRef(f"{n}{aplicacao.replace(' ', '_')}_A")
         if aplicacao not in aplicacoesList:
             g.add((aplicacaoURI, RDF.type, OWL.NamedIndividual))
             g.add((aplicacaoURI, RDF.type, n.Aplicacao))
@@ -76,7 +76,7 @@ for disciplina in data["disciplinas"]:
         conceitos = disciplina["conceitos"]
     else:
         conceitos = []
-    disciplinaURI = URIRef(f"{n}{nome.replace(' ', '_')}")
+    disciplinaURI = URIRef(f"{n}{nome.replace(' ', '_')}_D")
 
     if nome not in disciplinasList:
         g.add((disciplinaURI, RDF.type, OWL.NamedIndividual))
@@ -85,7 +85,7 @@ for disciplina in data["disciplinas"]:
         disciplinasList.append(nome)
     
     for t in tConhecimento:
-        tURI = URIRef(f"{n}{t.replace(' ', '_')}")
+        tURI = URIRef(f"{n}{t.replace(' ', '_')}_T")
         if t not in tConhecimentoList:
             g.add((tURI, RDF.type, OWL.NamedIndividual))
             g.add((tURI, RDF.type, n.TipoDeConhecimento))
@@ -94,7 +94,7 @@ for disciplina in data["disciplinas"]:
         g.add((disciplinaURI,n.pertenceA,tURI))
 
     for con in conceitos:
-        conURI = URIRef(f"{n}{con.replace(' ', '_')}")
+        conURI = URIRef(f"{n}{con.replace(' ', '_')}_C")
         if con not in conceitosList:
             g.add((conURI, RDF.type, OWL.NamedIndividual))
             g.add((conURI, RDF.type, n.Conceito))
@@ -113,7 +113,7 @@ for mestre in data["mestres"]:
     periodoHist = mestre["períodoHistórico"]
     disciplinas = mestre["disciplinas"]
 
-    mestreURI = URIRef(f"{n}{nome.replace(' ', '_')}")
+    mestreURI = URIRef(f"{n}{nome.replace(' ', '_')}_M")
 
     if nome not in mestresList:
         g.add((mestreURI, RDF.type, OWL.NamedIndividual))
@@ -121,7 +121,7 @@ for mestre in data["mestres"]:
         g.add((mestreURI, n.nome, Literal(nome)))
         mestresList.append(nome)
     
-    periodoURI = URIRef(f"{n}{periodoHist.replace(' ', '_')}")
+    periodoURI = URIRef(f"{n}{periodoHist.replace(' ', '_')}_P")
     if periodoHist not in periodoHistList:
         g.add((periodoURI, RDF.type, OWL.NamedIndividual))
         g.add((periodoURI, RDF.type, n.PeriodoHistorico))
@@ -130,7 +130,7 @@ for mestre in data["mestres"]:
     g.add((mestreURI,n.surgeEm,periodoURI))
 
     for dis in disciplinas:
-        disURI = URIRef(f"{n}{dis.replace(' ', '_')}")
+        disURI = URIRef(f"{n}{dis.replace(' ', '_')}_D")
         if dis not in disciplinasList:
             g.add((disURI, RDF.type, OWL.NamedIndividual))
             g.add((disURI, RDF.type, n.Disciplina))
@@ -148,7 +148,7 @@ for obra in data["obras"]:
     nome = obra["titulo"] #str
     autor = obra["autor"]
     conceitos = obra["conceitos"]
-    obraURI = URIRef(f"{n}{nome.replace(' ', '_')}")
+    obraURI = URIRef(f"{n}{nome.replace(' ', '_')}_O")
 
     if nome not in obrasList:
         g.add((obraURI, RDF.type, OWL.NamedIndividual))
@@ -156,7 +156,7 @@ for obra in data["obras"]:
         g.add((obraURI, n.titulo, Literal(nome)))
         obrasList.append(nome)
     
-    autorURI = URIRef(f"{n}{autor.replace(' ', '_')}")
+    autorURI = URIRef(f"{n}{autor.replace(' ', '_')}_A")
     if autor not in mestresList:
         g.add((autorURI, RDF.type, OWL.NamedIndividual))
         g.add((autorURI, RDF.type, n.Mestre))
@@ -165,7 +165,7 @@ for obra in data["obras"]:
     g.add((obraURI,n.foiEscritoPor,autorURI))
 
     for con in conceitos:
-        conURI = URIRef(f"{n}{con.replace(' ', '_')}")
+        conURI = URIRef(f"{n}{con.replace(' ', '_')}_C")
         if con not in conceitosList:
             g.add((conURI, RDF.type, OWL.NamedIndividual))
             g.add((conURI, RDF.type, n.Conceito))
@@ -183,7 +183,7 @@ for aprendiz in data:
     nome = aprendiz["nome"] #str
     idade = aprendiz["idade"]
     disciplinas = aprendiz["disciplinas"]
-    aprendizURI = URIRef(f"{n}{nome.replace(' ', '_')}")
+    aprendizURI = URIRef(f"{n}{nome.replace(' ', '_')}_A")
 
     if nome not in aprendizesList:
         g.add((aprendizURI, RDF.type, OWL.NamedIndividual))
@@ -192,7 +192,7 @@ for aprendiz in data:
     g.add((aprendizURI, n.idade, Literal(idade)))
 
     for dis in disciplinas:
-        disURI = URIRef(f"{n}{dis.replace(' ', '_')}")
+        disURI = URIRef(f"{n}{dis.replace(' ', '_')}_D")
         if dis not in disciplinasList:
             g.add((disURI, RDF.type, OWL.NamedIndividual))
             g.add((disURI, RDF.type, n.Disciplina))
@@ -200,4 +200,6 @@ for aprendiz in data:
             disciplinasList.append(dis)
         g.add((aprendizURI,n.aprende,disURI))
 
+
+print(conceitosList)
 print(g.serialize("sapientia_ind.ttl", format="turtle"))

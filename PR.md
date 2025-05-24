@@ -12,5 +12,3 @@ python .\populateSapientia.py
 3. a migração foi feita com os ficheiros na pasta onde o sript é corrido
 
 4. todas as queries foram feitas no ficheiro sparql incluindo os inserts e constructs, a definição dos novos objectProperties foram feitos também no GraphDB
-
-5. a query 18 não tem output pois no meu ficheiro de povoamento de aprendizes nenhum tem como disciplina "Programação"
